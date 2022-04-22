@@ -4,6 +4,7 @@ function getRandomInt(min, max) {
 
 function computerPlay() {
     let result = getRandomInt(1, 3);
+    console.log(result);
     switch(result) {
         case 1:
             return 'ROCK';
@@ -35,33 +36,44 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-function game() {
-    let computerScore = 0;
-    let playerScore = 0;
-    for(let i = 0; i < 5; i++){
-        let playerSelection = prompt('Rock, Paper or Scissors?');
-        console.log(`You chose ${playerSelection}`);
-        let computerSelection = computerPlay();
-        console.log(`The computer chose ${computerSelection}`);
-        let result = playRound(playerSelection, computerSelection);
-        if(result === 0){
-            computerScore += 1;
-            console.log(`You lost round ${i + 1}`);
-        }
-        else if(result === 2){
-            console.log(`Its a draw!`);
-        }
-        else{
-            playerScore += 1;
-            console.log(`You won round ${i +1 }`);
-        }
+
+
+function game(e) {
+    if(computerScore > 4|| playerScore > 4){
+        computerScore = 0;
+        playerScore = 0;
     }
-    if(playerScore > computerScore){
-        console.log(`You won with ${playerScore} points!`);
+    let playerSelection = this.className;
+    let computerSelection = computerPlay();
+    let result = playRound(playerSelection, computerSelection);
+    if(result === 0){
+        computerScore += 1;
+        divs.textContent = 'You lost';
+    }
+    else if(result === 2){
+        divs.textContent = 'Its a draw!';
     }
     else{
-        console.log('You lose!');
+        playerScore += 1;
+        divs.textContent = 'You won!';
     }
+    player.textContent = `Player score: ${playerScore}`;
+    computer.textContent = `Computer score: ${computerScore}`;
+    if(playerScore > 4){
+        divs.textContent = 'You win 5 times. You win this round!';
+    }
+    else if(computerScore > 4){
+        divs.textContent = 'The computer wins 5 times. You lose this round.';
+    }
+    divs.appendChild(player);
+    divs.appendChild(computer);
+    
 }
 
-game();
+let computerScore = 0;
+let playerScore = 0;
+const divs = document.querySelector('div');
+const player = document.createElement('div');
+const computer = document.createElement('div');
+const buttons = document.querySelectorAll('button');
+buttons.forEach(button => button.addEventListener('click', game));
